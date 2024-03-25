@@ -17,8 +17,9 @@ export const NOT_FOUND = createError(
     'The requested resource could not be found.',
     404
 );
+
 export const ALREADY_EXISTS = createError(
-  'ALREADY_EXISTS',
-  'This resource already exists in database.',
-  412
+    'ALREADY_EXISTS',
+    'This resource already exists in database.',
+    412
 );
