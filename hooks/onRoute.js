@@ -1,5 +1,6 @@
 /** @type{import('fastify').FastifyPluginAsync<>} */
 import {checkExistence, checkExistenceCat, checkExistenceReg, extractUser, logMe} from './functions/index.js';
+import { userIsAdmin } from './functions/register/userIsAdmin.js';
 
 export default async function onRouteHook(app, options) {
     app.addHook('onRoute', (routeOptions) => {
@@ -19,6 +20,9 @@ export default async function onRouteHook(app, options) {
         }
         if(routeOptions.config?.requireAuthentication){
             routeOptions.onRequest.push(extractUser(app));
+        }
+        if(routeOptions.config?.checkAdmin){
+            routeOptions.onRequest.push(userIsAdmin(app));
         }
         if(routeOptions.url === '/products' && routeOptions.method === 'POST'){
             routeOptions.preHandler.push(checkExistence(app));

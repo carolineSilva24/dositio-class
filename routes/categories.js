@@ -4,6 +4,7 @@ export default async function categories(app, options) {
     const InvalidCategoriesError = createError('InvalidCategoriesError', 'Categoria Inválida.', 400);
 
     const categories = app.mongo.db.collection('categories');
+    const products = app.mongo.db.collection('products');
 
     app.get('/categories', 
         {
@@ -16,6 +17,22 @@ export default async function categories(app, options) {
         }
     );
 
+    app.get('/categories/:id/products', 
+        {
+            config: {
+                logMe: true
+            }
+        },
+        async (request, reply) => {
+
+            let category = await categories.findOne({_id: new app.mongo.ObjectId(request.params.id)});
+            let categoryName = category.name;
+            console.log(categoryName)
+            let productsCategory = await products.find({category: categoryName}).toArray()  
+            console.log(productsCategory)         
+            return productsCategory;   
+        }
+    )
     app.post('/categories', {
         schema: {
             body: {
@@ -29,7 +46,8 @@ export default async function categories(app, options) {
             }
         },
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            checkAdmin: true
         }
     }, async (request, reply) => {
         let category = request.body;
@@ -48,7 +66,8 @@ export default async function categories(app, options) {
     
     app.delete('/categories/:id', {
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            checkAdmin: true
         }
     }, async (request, reply) => {
         let id =  request.params.id;
@@ -59,8 +78,20 @@ export default async function categories(app, options) {
     });
 
     app.put('/categories/:id', {
+        schema: {
+            body: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer' },
+                    name: { type: 'string' },
+                    img_url: {type: 'string'}
+                },
+                required: ['name', 'img_url']
+            }
+        },
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            checkAdmin: true
         }
     }, async (request, reply) => {
         let id =  request.params.id;
