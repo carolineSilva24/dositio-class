@@ -1,7 +1,5 @@
 /** @type{import('fastify').FastifyPluginAsync<>} */
-import createError from '@fastify/error';
 export default async function register(app, options) {
-    const InvalidProductError = createError('InvalidProductError', 'Produto Inválido.', 400);
 
     const users = app.mongo.db.collection('users');
 
@@ -10,7 +8,7 @@ export default async function register(app, options) {
             body: {
                 type: 'object',
                 properties: {
-                    id: { type: 'integer' },
+                    _id: { type: 'string' },
                     username: { type: 'string' },
                     password: { type: 'string' },
                     isAdmin: { type: 'boolean' }

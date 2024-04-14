@@ -4,7 +4,8 @@ export const checkExistenceReg = (app) => async (request, reply) => {
 
     let user = request.body;
 
-    let result = await users.count({name: user.username});
+    let result = await users.count({username: user.username});
+    console.log(result)
 
     if(result > 0) throw new ALREADY_EXISTS();
 }
