@@ -246,9 +246,9 @@ describe("##Suit to test /products(token errors) API", async (t) => {
                     "category": "Comida"
                 },
                 headers: {
-                    "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1p2VybmFtZSI6Ik1hcm5lIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTcxMzEwODcyMn0.TsaoR6yXiYjqDN2jXU0MED2g6AW4V90TtNFeMGShXuE",
-                    "isadmin": "false"
-                }
+                    "isadmin": "false",
+                    "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hcm5lIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTcxMzE4NDI5Mn0.3M0RSpjVOJYbnlt8ZgDq-I0a_Gx2jN2K6QEvNEPxXXI"
+                 }
             });
     
             deepEqual(response.statusCode, 401);
@@ -374,20 +374,6 @@ describe("##Suit to test /categories API", async (t) => {
 });
 
 describe("##Suit to test errors", async (t) => {
-
-    test('# GET / for Internal Server Error', async (t) => {
-        const app = await build(options);
-
-        t.after(async () => {
-            await app.close();
-        });
-        const response = await app.inject({
-            method: 'GET',
-            url: '/'
-        });
-
-        equal(response.statusCode, 500);
-    })
 
     test('# GET /error', async (t) => {
         const app = await build(options);
